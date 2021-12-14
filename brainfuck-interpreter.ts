@@ -7,6 +7,13 @@ class BrainfuckInterpreter {
     private static array = new Uint8Array(30000);
 
     /**
+     * The pointer to the input string.
+     *
+     * @var {number}
+     */
+    private static inputPointer: number = 0;
+
+    /**
      * The pointer to the array.
      *
      * @var {number}
@@ -19,6 +26,13 @@ class BrainfuckInterpreter {
      * @var {string}
      */
     public static target: string = "";
+
+    /**
+     * The input string to use while parsing.
+     *
+     * @var {string}
+     */
+    public static input: string = "";
 
     /**
      * The result.
@@ -73,11 +87,17 @@ class BrainfuckInterpreter {
             }
 
             case ",": {
-                const input = prompt("Please enter an ascii value");
+                const input = BrainfuckInterpreter.input.charCodeAt(
+                    BrainfuckInterpreter.inputPointer
+                );
 
-                if (!input) throw new Error("You must enter a value!");
+                BrainfuckInterpreter.array[BrainfuckInterpreter.pointer] = input;
 
-                BrainfuckInterpreter.array[BrainfuckInterpreter.pointer] = input.charCodeAt(0);
+                if (isNaN(BrainfuckInterpreter.array[BrainfuckInterpreter.pointer])) {
+                    BrainfuckInterpreter.array[BrainfuckInterpreter.pointer] = 0;
+                }
+
+                BrainfuckInterpreter.inputPointer += 1;
 
                 break;
             }
@@ -119,7 +139,9 @@ class BrainfuckInterpreter {
             }
         }
 
-        if (closeIndex === -1) throw new Error("You're missing a closing loop tag!");
+        if (closeIndex === -1) {
+            throw new Error("You're missing a closing loop tag!");
+        }
 
         const loopString = sliced.slice(0, closeIndex);
 
@@ -153,9 +175,11 @@ class BrainfuckInterpreter {
      *
      * @return {string} The parsed result.
      */
-    private static reset(target: string): void {
+    private static reset(target: string, input: string): void {
         BrainfuckInterpreter.array = new Uint8Array(30000);
+        BrainfuckInterpreter.inputPointer = 0;
         BrainfuckInterpreter.target = target;
+        BrainfuckInterpreter.input = input;
         BrainfuckInterpreter.result = "";
         BrainfuckInterpreter.pointer = 0;
     }
@@ -164,11 +188,12 @@ class BrainfuckInterpreter {
      * Parse a string.
      *
      * @param {string} target The target string.
+     * @param {string} input The input.
      *
      * @return {string} The parsed result.
      */
-    public static parse(target: string): string {
-        BrainfuckInterpreter.reset(target);
+    public static parse(target: string, input: string = ""): string {
+        BrainfuckInterpreter.reset(target, input);
 
         for (let i = 0; i < BrainfuckInterpreter.target.length; i += 1) {
             const character = BrainfuckInterpreter.target.charAt(i);
@@ -191,5 +216,3 @@ class BrainfuckInterpreter {
         return this.result;
     }
 }
-
-export default BrainfuckInterpreter;

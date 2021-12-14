@@ -90,13 +90,34 @@ class BrainfuckInterpreter {
     private static loop = (sliceFrom: number): number => {
         const sliced = BrainfuckInterpreter.target.slice(sliceFrom);
 
-        const loopCloseIndex = sliced.indexOf("]");
+        let closeIndex = -1;
+        let closingTagsRequired = 0;
 
-        if (loopCloseIndex === -1) {
-            throw new Error("You're missing a closing loop tag!");
+        for (let i = 0; i < sliced.length; i += 1) {
+            const character = sliced.charAt(i);
+
+            if (character === "[") {
+                closingTagsRequired += 1;
+
+                continue;
+            }
+
+            if (character === "]") {
+                if (closingTagsRequired === 0) {
+                    closeIndex = i;
+
+                    break;
+                }
+
+                closingTagsRequired -= 1;
+
+                continue;
+            }
         }
 
-        const loopString = sliced.slice(0, loopCloseIndex);
+        if (closeIndex === -1) throw new Error("You're missing a closing loop tag!");
+
+        const loopString = sliced.slice(0, closeIndex);
 
         while (BrainfuckInterpreter.array[BrainfuckInterpreter.pointer] > 0) {
             for (let i = 0; i < loopString.length; i += 1) {

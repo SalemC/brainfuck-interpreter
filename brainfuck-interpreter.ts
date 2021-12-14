@@ -4,7 +4,7 @@ class BrainfuckInterpreter {
      *
      * @var {Uint8Array}
      */
-    private static readonly array = new Uint8Array(30000);
+    private static array = new Uint8Array(30000);
 
     /**
      * The pointer to the array.
@@ -122,6 +122,20 @@ class BrainfuckInterpreter {
     };
 
     /**
+     * Reset the interpreter.
+     *
+     * @param {string} target The target string.
+     *
+     * @return {string} The parsed result.
+     */
+    private static reset(target: string): void {
+        BrainfuckInterpreter.array = new Uint8Array(30000);
+        BrainfuckInterpreter.target = target;
+        BrainfuckInterpreter.result = "";
+        BrainfuckInterpreter.pointer = 0;
+    }
+
+    /**
      * Parse a string.
      *
      * @param {string} target The target string.
@@ -129,8 +143,7 @@ class BrainfuckInterpreter {
      * @return {string} The parsed result.
      */
     public static parse(target: string): string {
-        BrainfuckInterpreter.target = target;
-        BrainfuckInterpreter.result = "";
+        BrainfuckInterpreter.reset(target);
 
         for (let i = 0; i < BrainfuckInterpreter.target.length; i += 1) {
             const character = BrainfuckInterpreter.target.charAt(i);

@@ -99,12 +99,12 @@ class BrainfuckInterpreter {
         const loopString = sliced.slice(0, loopCloseIndex);
 
         while (BrainfuckInterpreter.array[BrainfuckInterpreter.pointer] > 0) {
-            for (let j = 0; j < loopString.length; j += 1) {
-                const loopChar = loopString.charAt(j);
+            for (let i = 0; i < loopString.length; i += 1) {
+                const loopChar = loopString.charAt(i);
 
                 switch (loopChar) {
                     case "[": {
-                        j += BrainfuckInterpreter.loop(sliceFrom + j + 1);
+                        i += BrainfuckInterpreter.loop(sliceFrom + i + 1);
 
                         break;
                     }

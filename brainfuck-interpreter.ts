@@ -51,11 +51,15 @@ class BrainfuckInterpreter {
             case ">": {
                 BrainfuckInterpreter.pointer += 1;
 
+                if (BrainfuckInterpreter.pointer > 30000) throw new Error("Pointer out of bounds!");
+
                 break;
             }
 
             case "<": {
                 BrainfuckInterpreter.pointer -= 1;
+
+                if (BrainfuckInterpreter.pointer < 0) throw new Error("Pointer out of bounds!");
 
                 break;
             }

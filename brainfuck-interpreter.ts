@@ -217,4 +217,4 @@ class BrainfuckInterpreter {
     }
 }
 
-export { parse: BrainfuckInterpreter.parse };
+export default BrainfuckInterpreter;

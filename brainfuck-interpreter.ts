@@ -216,3 +216,5 @@ class BrainfuckInterpreter {
         return this.result;
     }
 }
+
+export { parse: BrainfuckInterpreter.parse };

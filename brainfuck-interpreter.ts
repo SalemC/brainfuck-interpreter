@@ -111,7 +111,7 @@ class BrainfuckInterpreter {
      *
      * @return {number} The number of characters the loop consists of.
      */
-    private static loop = (sliceFrom: number): number => {
+    private static loop(sliceFrom: number): number {
         const sliced = BrainfuckInterpreter.target.slice(sliceFrom);
 
         let closeIndex = -1;
